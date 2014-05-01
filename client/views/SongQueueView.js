@@ -7,14 +7,19 @@ var SongQueueView = Backbone.View.extend({
     this.render();
 
     // listener to update queue when the songqueue collection changes
-    this.collection.on('add', function(song) {
-      this.$el.append(new SongQueueEntryView({model: song}).render());
+    this.collection.on('add remove', function(song) {
+      this.render();
     }, this);
+
   },
 
   render: function() {
     this.$el.children().detach();
-    this.$el.html('<th>Queue</th>');
+    this.$el.html('<th>SongQueue</th>').append(
+      this.collection.map(function(song){
+        return new SongQueueEntryView({model: song}).render();
+      })
+    );
   }
 
 });
