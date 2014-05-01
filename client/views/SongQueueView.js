@@ -5,11 +5,11 @@ var SongQueueView = Backbone.View.extend({
 
   initialize: function() {
     this.render();
-  },
 
-  // will create new SongQueueEntryView when queue event is broadcasted
-  queue: function(song) {
-    this.$el.append(new SongQueueEntryView({model: song}).render());
+    // listener to update queue when the songqueue collection changes
+    this.collection.on('add', function(song) {
+      this.$el.append(new SongQueueEntryView({model: song}).render());
+    }, this);
   },
 
   render: function() {
