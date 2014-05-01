@@ -7,7 +7,7 @@ var SongQueueView = Backbone.View.extend({
     this.render();
 
     // listener to update queue when the songqueue collection changes
-    this.collection.on('add remove', function(song) {
+    this.collection.on('add remove change:playsCount', function(song) {
       this.render();
     }, this);
 

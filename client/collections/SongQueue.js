@@ -8,9 +8,10 @@ var SongQueue = Songs.extend({
   },
 
   enqueue: function(song) {
+    var lenBefore = this.length;
     this.add(song);
-    // if only song, also this.model.play()
-    if (this.length === 1) {
+    // if this is first song in the queue, play it immediately
+    if (lenBefore === 0) {
       this.playFirst();
     }
   },
@@ -18,21 +19,16 @@ var SongQueue = Songs.extend({
   dequeue: function(song) {
     var first = this.first();
     this.remove(song);
-    // end the current song so that if there are no songs left, nothing is playing
-    // if this is the current song, play the new first song
+    // if the top song was removed (from track ending or
+    // manually removing), play the new first song
     if (song === first) {
       this.playFirst();
     }
   },
 
   initialize: function(){
-    this.on('dequeue', function (song) {
+    this.on('dequeue ended', function (song) {
       this.dequeue(song);
-    });
-
-    this.on('ended', function(song) {
-      this.dequeue(song);
-      this.playFirst();
     });
   }
 
