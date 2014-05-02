@@ -4,7 +4,7 @@ var CurrentSongView = Backbone.View.extend({
 
   tagName: 'div',
 
-  template: _.template('<h2 class="current-song"><%= artist %> - <%= title %></h2>'),
+  template: _.template('<h2 id="current-song"><%= artist %> - <%= title %></h2>'),
 
   // initialize: function() {
   //   this.model.on('change:currentSong', function(model){
