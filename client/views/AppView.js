@@ -5,7 +5,7 @@ var AppView = Backbone.View.extend({
     this.currentSongView = new CurrentSongView({model: this.model.get('currentSong')});
     this.playerView = new PlayerView({model: this.model.get('currentSong')});
     this.playlistsView = new PlaylistsView({collection: this.model.get('playlists')});
-    this.songQueueView = new SongQueueView({collection: this.model.get('songQueue')});
+    this.songQueueView = new SongQueueView({model: this.model.get('currentPlaylist')});
     this.libraryView = new LibraryView({collection: this.model.get('library')});
 
     // change:currentSong - this is Backbone's way of allowing you to filter events to
@@ -14,6 +14,13 @@ var AppView = Backbone.View.extend({
       this.playerView.setSong(model.get('currentSong'));
       this.currentSongView.render(model.get('currentSong'));
     }, this);
+
+    // listener to update in currentPlaylist and rerender
+    this.model.on('change:currentPlaylist', function(model) {
+      this.songQueueView.setPlaylist(model.get('currentPlaylist'));
+    }, this);
+
+
   },
 
   render: function(){

@@ -7,6 +7,13 @@ var SongQueue = Songs.extend({
     }
   },
 
+  playNext: function(song) {
+    var nextIndex = this.indexOf(song) + 1;
+    if (this.at(nextIndex)) {
+      this.at(nextIndex).play();
+    }
+  },
+
   enqueue: function(song) {
     var lenBefore = this.length;
     this.add(song);
@@ -27,8 +34,12 @@ var SongQueue = Songs.extend({
   },
 
   initialize: function(){
-    this.on('dequeue ended', function (song) {
+    this.on('dequeue', function (song) {
       this.dequeue(song);
+    });
+
+    this.on('ended', function (song) {
+      this.playNext(song);
     });
   }
 

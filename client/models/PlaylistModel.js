@@ -6,7 +6,7 @@ var PlaylistModel = Backbone.Model.extend({
     // set current playlist to be this playlist if it is the only playlist
   },
 
-  default: {
-    name: name
+  defaults: {
+    name: 'None'
   }
 });

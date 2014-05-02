@@ -12,12 +12,14 @@ var PlaylistsView = Backbone.View.extend({
 
   initialize: function() {
     this.render();
+
     this.collection.on('add', function(){
-      console.log('a new playlist was added!');
-    });
+      this.render();
+    }, this);
   },
 
   events: {
+    // select a playlist should change currentplaylist
     'submit': function(e) {
       e.preventDefault();
       var playlistName = this.$('input[name=playlist]').val();
@@ -26,9 +28,7 @@ var PlaylistsView = Backbone.View.extend({
   },
 
   render: function() {
-    // this.$el.children().detach();
-
-    var test = [1, 2, 3, 4];
+    this.$el.children().detach();
 
     this.$el.html(
       '<form id="new-playlist">\
@@ -38,8 +38,9 @@ var PlaylistsView = Backbone.View.extend({
       <select id="playlist-select"></select>');
 
     this.$el.find('#playlist-select').append(
-      _.map(test, function(item) {
-        return '<option value="' + item + '">Hip Hop</option>';
+      this.collection.map(function(playlist) {
+        var name = playlist.get('name');
+        return '<option value="' + name + '">' + name + '</option>';
       })
     );
   }

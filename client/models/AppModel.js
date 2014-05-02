@@ -3,8 +3,11 @@ var AppModel = Backbone.Model.extend({
 
   initialize: function(params){
     this.set('currentSong', new SongModel());
-    this.set('songQueue', new SongQueue());
     this.set('playlists', new Playlists());
+    // add an empty default playlist to playlists
+    // set that default to currentPlaylist (songQueue)
+    // --or-- currentPlaylist (songQueue) starts empty
+    this.set('currentPlaylist', new PlaylistModel());
 
     /* Note that 'this' is passed as the third argument. That third argument is
     the context. The 'play' handler will always be bound to that context we pass in.
@@ -21,7 +24,13 @@ var AppModel = Backbone.Model.extend({
     }, this);
 
     params.library.on('enqueue', function(song){
-      this.get('songQueue').enqueue(song);
+      this.get('currentPlaylist').get('songList').enqueue(song);
+    }, this);
+
+    this.get('playlists').on('add', function(playlist) {
+      if (this.get('playlists').length === 1) {
+        this.set('currentPlaylist', playlist);
+      }
     }, this);
   }
 
